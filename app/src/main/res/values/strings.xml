@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mobility Lens</string>
+    <string name="app_intro">Explore how mobile characteristics influence application design.</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="app_feature_label">Application or feature name</string>
+    <string name="analyze">Analyze</string>
+    <string name="mobile_constraint">Mobile constraint</string>
+    <string name="developer_implication">Developer implication</string>
+    <string name="blank_input_message">Please enter an application or feature name.</string>
+</resources>
