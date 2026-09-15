@@ -1,9 +1,8 @@
 # Mobility Lens
 
-**CS501 E1 — Mobile Application Development**  
-**Exercise 1: Understanding Mobility and Mobile Application Development**  
+**CS501 E1 — Mobile Application Development**
 **Ankita Patra**
-**BU ID : U38177365**
+**BU ID: U38177365**
 
 ## Overview
 
@@ -52,7 +51,7 @@ Each dimension includes a short explanation of the mobile constraint and a pract
 
 ## How to Run
 
-1. Clone this repository.
+1. Clone this repository : https://github.com/2003Ankita/CS501-E1.git
 2. Open the project folder in Android Studio.
 3. Allow Gradle to sync and download the required dependencies.
 4. Select an Android emulator or compatible Android device.
@@ -84,14 +83,18 @@ The project uses Gradle Kotlin DSL for build configuration. Dependency and plugi
 User-facing labels and messages are stored in `strings.xml` rather than being unnecessarily hardcoded in the UI.
 
 ## Project Structure
-
-- `app/src/main/java/com/ankitapatra/mobilitylens/MainActivity.kt` — main Compose UI, state, interaction logic, and mobility dimension data
-- `app/src/main/java/com/ankitapatra/mobilitylens/ui/theme/` — Material theme and typography configuration
+- `app/src/main/java/com/ankitapatra/mobilitylens/MainActivity.kt` — application entry point and Compose setup
+- `app/src/main/java/com/ankitapatra/mobilitylens/data/MobilityDimension.kt` — data model for a mobility dimension
+- `app/src/main/java/com/ankitapatra/mobilitylens/data/MobilityDimensions.kt` — six mobility dimensions and their developer implications
+- `app/src/main/java/com/ankitapatra/mobilitylens/ui/MobilityLensScreen.kt` — main Compose screen, UI state, progress, and interaction logic
+- `app/src/main/java/com/ankitapatra/mobilitylens/ui/components/` — reusable Compose components for the dimension card, navigation controls, and analysis panel
+- `app/src/main/java/com/ankitapatra/mobilitylens/ui/theme/` — Material theme, colors, and typography
 - `app/src/main/res/values/strings.xml` — user-facing string resources
-- `app/src/main/AndroidManifest.xml` — application and activity configuration
+- `app/src/main/AndroidManifest.xml` — application and launcher activity configuration
 - `app/build.gradle.kts` — module-level Android and dependency configuration
 - `gradle/libs.versions.toml` — centralized dependency and plugin versions
-- `report/` — final exercise report and supporting submission material
+- `screenshots/` — portrait, validation, analysis, and landscape testing screenshots
+- `report/` — final exercise report and AI assistance disclosure
 
 ## AI Assistance Disclosure
 
