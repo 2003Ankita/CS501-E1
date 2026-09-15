@@ -98,4 +98,4 @@ User-facing labels and messages are stored in `strings.xml` rather than being un
 
 ## AI Assistance Disclosure
 
-Generative AI was used as a limited development aid during this exercise for guidance on project setup, Jetpack Compose concepts, code review, and documentation organization. AI-generated suggestions were reviewed and adapted before being incorporated into the project. The application was manually built, executed, tested, and verified in Android Studio.
+Generative AI was used as a limited development aid during this exercise for guidance on project setup, Jetpack Compose concepts, and documentation organization. AI-generated suggestions were reviewed and adapted before being incorporated into the project. The application was manually built, executed, tested, and verified in Android Studio.
