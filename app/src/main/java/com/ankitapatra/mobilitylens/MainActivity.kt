@@ -32,7 +32,31 @@ import androidx.compose.material3.Card
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.tooling.preview.Preview
-
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Smartphone
+import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.outlined.TouchApp
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.material.icons.outlined.ScreenRotation
+import androidx.compose.material.icons.outlined.BatteryChargingFull
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Edit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +77,8 @@ class MainActivity : ComponentActivity() {
 data class MobilityDimension(
     val name: String,
     val constraint: String,
-    val implication: String
+    val implication: String,
+    val icon: ImageVector
 )
 @Composable
 fun MobilityLensScreen(modifier: Modifier = Modifier) {
@@ -67,7 +92,7 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
     val blankInputMessage = stringResource(R.string.blank_input_message)
     val analysisResult = stringResource(
         R.string.analysis_result,
-        applicationName,
+        applicationName.trim().replaceFirstChar { it.uppercase() },
         dimension.name,
         dimension.implication
     )
@@ -75,33 +100,94 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .verticalScroll(rememberScrollState())
             .padding(24.dp)
     )
     {
-        Text(
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF294983)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Smartphone,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
 
-        Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
 
-        Text(
-            text = stringResource(R.string.app_intro)
-        )
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Box(
+                        modifier = Modifier
+                            .size(52.dp)
+                            .background(
+                                color = Color.White.copy(alpha = 0.18f),
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+                }
 
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = stringResource(R.string.app_intro),
+                    color = Color.White.copy(alpha = 0.85f)
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = "Dimension ${currentIndex + 1} of ${mobilityDimensions.size}",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Dimension ${currentIndex + 1} of ${mobilityDimensions.size}",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Text(
+                text = "${kotlin.math.round(((currentIndex + 1).toFloat() / mobilityDimensions.size) * 100).toInt()}% complete",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
         LinearProgressIndicator(
             progress = { (currentIndex + 1).toFloat() / mobilityDimensions.size },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -124,6 +210,27 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
         )
 
         Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = stringResource(R.string.try_it_yourself),
+                style = MaterialTheme.typography.titleMedium,
+                color = Color(0xFF17233C)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         AnalyzePanel(
             applicationName = applicationName,
@@ -149,22 +256,63 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
 @Composable
 fun MobilityDimensionCard(dimension: MobilityDimension) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFEAF2FF)
+        ),
+        shape = RoundedCornerShape(24.dp)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
-            Text(
-                text = dimension.name,
-                style = MaterialTheme.typography.titleLarge
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(52.dp)
+                        .background(
+                            color = Color(0xFFD7E4FF),
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = dimension.icon,
+                        contentDescription = null,
+                        tint = Color(0xFF2457E6),
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Text(
+                    text = dimension.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFF17233C)
+                )
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Smartphone,
+                    contentDescription = null,
+                    tint = Color(0xFFE53935),
+                    modifier = Modifier.width(22.dp)
+                )
 
-            Text(
-                text = stringResource(R.string.mobile_constraint),
-                style = MaterialTheme.typography.titleMedium
-            )
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = stringResource(R.string.mobile_constraint),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color(0xFFE53935)
+                )
+            }
 
             Spacer(modifier = Modifier.height(4.dp))
 
@@ -172,10 +320,24 @@ fun MobilityDimensionCard(dimension: MobilityDimension) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = stringResource(R.string.developer_implication),
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Lightbulb,
+                    contentDescription = null,
+                    tint = Color(0xFF16834B),
+                    modifier = Modifier.width(22.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = stringResource(R.string.developer_implication),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color(0xFF16834B)
+                )
+            }
 
             Spacer(modifier = Modifier.height(4.dp))
 
@@ -199,6 +361,13 @@ fun NavigationButtons(
             onClick = onPrevious,
             enabled = canGoPrevious
         ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
             Text(stringResource(R.string.previous))
         }
 
@@ -207,6 +376,13 @@ fun NavigationButtons(
             enabled = canGoNext
         ) {
             Text(stringResource(R.string.next))
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
+                contentDescription = null
+            )
         }
     }
 }
@@ -235,12 +411,56 @@ fun AnalyzePanel(
         onClick = onAnalyze,
         modifier = Modifier.fillMaxWidth()
     ) {
+        Icon(
+            imageVector = Icons.Outlined.Search,
+            contentDescription = null
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
         Text(stringResource(R.string.analyze))
     }
 
     if (resultMessage.isNotEmpty()) {
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = resultMessage)
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFF1F3F6)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.CheckCircle,
+                        contentDescription = null,
+                        tint = Color(0xFF16834B),
+                        modifier = Modifier.size(24.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(
+                        text = "Analysis Result",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color(0xFF16834B)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = resultMessage,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
     }
 }
 
@@ -253,33 +473,39 @@ fun MobilityLensPreview() {
 }
 val mobilityDimensions = listOf(
     MobilityDimension(
-        "Input and Interaction",
-        "Mobile users mainly interact through touch, gestures, and on-screen keyboards.",
-        "Developers should use clear controls, comfortable touch targets, and avoid relying on hover."
+        name = "Input and Interaction",
+        constraint = "Mobile users mainly interact through touch, gestures, and on-screen keyboards.",
+        implication = "Developers should use clear controls, comfortable touch targets, and avoid relying on hover.",
+        icon = Icons.Outlined.TouchApp
     ),
     MobilityDimension(
-        "Screen Size, Orientation, and Density",
-        "Phones have limited screen space and can vary in orientation and pixel density.",
-        "Developers should create responsive layouts that remain readable in different screen conditions."
+        name = "Screen Size, Orientation, and Density",
+        constraint = "Phones have limited screen space and can vary in orientation and pixel density.",
+        implication = "Developers should create responsive layouts that remain readable in different screen conditions.",
+        icon = Icons.Outlined.ScreenRotation
     ),
     MobilityDimension(
-        "Lifecycle and Resource Constraints",
-        "Mobile apps can be paused, stopped, recreated, or limited by memory and battery conditions.",
-        "Developers should manage state carefully and avoid unnecessary background work."
+        name = "Lifecycle and Resource Constraints",
+        constraint = "Mobile apps can be paused, stopped, recreated, or limited by memory and battery conditions.",
+        implication = "Developers should manage state carefully and avoid unnecessary background work.",
+        icon = Icons.Outlined.BatteryChargingFull
     ),
     MobilityDimension(
-        "Context Awareness",
-        "Mobile devices may be used in changing locations, environments, and connectivity conditions.",
-        "Developers should design features that adapt appropriately to the user's current context."
+        name = "Context Awareness",
+        constraint = "Mobile devices may be used in changing locations, environments, and connectivity conditions.",
+        implication = "Developers should design features that adapt appropriately to the user's current context.",
+        icon = Icons.Outlined.LocationOn
     ),
     MobilityDimension(
-        "Usage Patterns",
-        "Mobile users often interact with apps in short sessions and may switch tasks frequently.",
-        "Developers should make important actions quick to access and easy to resume."
+        name = "Usage Patterns",
+        constraint = "Mobile users often interact with apps in short sessions and may switch tasks frequently.",
+        implication = "Developers should make important actions quick to access and easy to resume.",
+        icon = Icons.Outlined.Schedule
     ),
     MobilityDimension(
-        "Security and Privacy Expectations",
-        "Mobile devices often contain sensitive personal information and private user data.",
-        "Developers should collect only necessary data and handle permissions and user information carefully."
+        name = "Security and Privacy Expectations",
+        constraint = "Mobile devices often contain sensitive personal information and private user data.",
+        implication = "Developers should collect only necessary data and handle permissions and user information carefully.",
+        icon = Icons.Outlined.Security
     )
 )

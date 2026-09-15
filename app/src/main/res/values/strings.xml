@@ -9,4 +9,5 @@
     <string name="developer_implication">Developer implication</string>
     <string name="blank_input_message">Please enter an application or feature name.</string>
     <string name="analysis_result">%1$s should consider %2$s: %3$s</string>
+    <string name="try_it_yourself">Try It Yourself</string>
 </resources>
