@@ -65,6 +65,12 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
 
     val dimension = mobilityDimensions[currentIndex]
     val blankInputMessage = stringResource(R.string.blank_input_message)
+    val analysisResult = stringResource(
+        R.string.analysis_result,
+        applicationName,
+        dimension.name,
+        dimension.implication
+    )
 
     Column(
         modifier = modifier
@@ -100,108 +106,144 @@ fun MobilityLensScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp)
-            ) {
-                Text(
-                    text = dimension.name,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = stringResource(R.string.mobile_constraint),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(text = dimension.constraint)
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = stringResource(R.string.developer_implication),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(text = dimension.implication)
-            }
-        }
+        MobilityDimensionCard(dimension = dimension)
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(
-                onClick = {
-                    if (currentIndex > 0) {
-                        currentIndex--
-                        resultMessage = ""
-                    }
-                },
-                enabled = currentIndex > 0
-            ) {
-                Text(stringResource(R.string.previous))
+        NavigationButtons(
+            canGoPrevious = currentIndex > 0,
+            canGoNext = currentIndex < mobilityDimensions.lastIndex,
+            onPrevious = {
+                currentIndex--
+                resultMessage = ""
+            },
+            onNext = {
+                currentIndex++
+                resultMessage = ""
             }
+        )
 
-            Button(
-                onClick = {
-                    if (currentIndex < mobilityDimensions.lastIndex) {
-                        currentIndex++
-                        resultMessage = ""
-                    }
-                },
-                enabled = currentIndex < mobilityDimensions.lastIndex
-            ) {
-                Text(stringResource(R.string.next))
-            }
-        }
         Spacer(modifier = Modifier.height(32.dp))
 
-        OutlinedTextField(
-            value = applicationName,
-            onValueChange = {
+        AnalyzePanel(
+            applicationName = applicationName,
+            resultMessage = resultMessage,
+            showError = showError,
+            onApplicationNameChange = {
                 applicationName = it
                 showError = false
             },
-            label = {
-                Text(stringResource(R.string.app_feature_label))
-            },
-            isError = showError,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
+            onAnalyze = {
                 if (applicationName.isBlank()) {
                     showError = true
                     resultMessage = blankInputMessage
                 } else {
                     showError = false
-                    resultMessage =
-                        "$applicationName should consider ${dimension.name}: ${dimension.implication}"
+                    resultMessage = analysisResult
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
+            }
+        )
+    }
+}
+
+@Composable
+fun MobilityDimensionCard(dimension: MobilityDimension) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
         ) {
-            Text(stringResource(R.string.analyze))
-        }
-        if (resultMessage.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = resultMessage)
+            Text(
+                text = dimension.name,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = stringResource(R.string.mobile_constraint),
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(text = dimension.constraint)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = stringResource(R.string.developer_implication),
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(text = dimension.implication)
         }
     }
 }
+
+@Composable
+fun NavigationButtons(
+    canGoPrevious: Boolean,
+    canGoNext: Boolean,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Button(
+            onClick = onPrevious,
+            enabled = canGoPrevious
+        ) {
+            Text(stringResource(R.string.previous))
+        }
+
+        Button(
+            onClick = onNext,
+            enabled = canGoNext
+        ) {
+            Text(stringResource(R.string.next))
+        }
+    }
+}
+
+@Composable
+fun AnalyzePanel(
+    applicationName: String,
+    resultMessage: String,
+    showError: Boolean,
+    onApplicationNameChange: (String) -> Unit,
+    onAnalyze: () -> Unit
+) {
+    OutlinedTextField(
+        value = applicationName,
+        onValueChange = onApplicationNameChange,
+        label = {
+            Text(stringResource(R.string.app_feature_label))
+        },
+        isError = showError,
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Button(
+        onClick = onAnalyze,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(stringResource(R.string.analyze))
+    }
+
+    if (resultMessage.isNotEmpty()) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = resultMessage)
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MobilityLensPreview() {
