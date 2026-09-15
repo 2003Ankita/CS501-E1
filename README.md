@@ -1,7 +1,7 @@
 # Mobility Lens
 
-**CS501 E1 — Mobile Application Development**
-**Ankita Patra**
+**CS501 E1 — Mobile Application Development**  
+**Ankita Patra**  
 **BU ID: U38177365**
 
 ## Overview
@@ -48,6 +48,7 @@ Each dimension includes a short explanation of the mobile constraint and a pract
 - **Test device:** Pixel 7 emulator, API 35
 - **Build system:** Gradle with Kotlin DSL
 - **Dependency management:** Gradle Version Catalog (`libs.versions.toml`)
+- **Android Studio:** Quail 4 Feature Drop (2026.1.4)
 
 ## How to Run
 
@@ -94,7 +95,8 @@ User-facing labels and messages are stored in `strings.xml` rather than being un
 - `app/build.gradle.kts` — module-level Android and dependency configuration
 - `gradle/libs.versions.toml` — centralized dependency and plugin versions
 - `screenshots/` — portrait, validation, analysis, and landscape testing screenshots
-- `report/` — final exercise report and AI assistance disclosure
+- `MobilityLens_Report_FINAL.pdf` — final exercise report
+- `MobilityLens_Disclosure_FINAL.pdf` — collaboration and generative-AI disclosure
 
 ## AI Assistance Disclosure
 
